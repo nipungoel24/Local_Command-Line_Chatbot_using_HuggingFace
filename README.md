@@ -120,14 +120,9 @@ This project is open-source and free to use under the MIT License.
 
 Made with ❤️ by [Nipun Goel](https://github.com/nipungoel24)
 
-```
-
----
-
 ✅ Let me know if you'd like:
 - A **demo video script**
 - To test or extend the chatbot
 - Help uploading to GitHub with all assets
 
 Want to include a badge section too?
-```
