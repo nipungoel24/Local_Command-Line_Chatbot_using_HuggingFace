@@ -2,7 +2,6 @@ Absolutely, Nipun! Here's your **final `README.md`** for the internship chatbot 
 
 ---
 
-```markdown
 # 🤖 CLI Chatbot using Mistral-7B-Instruct (Hugging Face Transformers)
 
 This project is a command-line chatbot that uses the [mistralai/Mistral-7B-Instruct-v0.1](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1) model from Hugging Face. The chatbot supports **multi-turn dialogue**, maintains short-term memory, and runs efficiently using **4-bit quantization** with `bitsandbytes`.
