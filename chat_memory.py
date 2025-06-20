@@ -3,6 +3,7 @@ class ChatMemory:
     def __init__(self, max_turns=3):
         self.max_turns = max_turns
         self.history = []
+        
 
     def add_exchange(self, user_input, bot_response):
         self.history.append(f"User: {user_input}\nBot: {bot_response}")
@@ -10,4 +11,4 @@ class ChatMemory:
             self.history.pop(0)
 
     def get_context(self):
-        return "\n".join(self.history)
+        return "\n".join(self.history) + "\n"
