@@ -1,16 +1,22 @@
-# 🤖 Local Command-Line Chatbot using Hugging Face
+Absolutely, Nipun! Here's your **final `README.md`** for the internship chatbot project using **Mistral-7B-Instruct**, formatted professionally and clearly for reviewers or GitHub submission.
 
-A lightweight, terminal-based chatbot built using Hugging Face's `distilgpt2` model. It supports context-aware, multi-turn conversations using a sliding window memory buffer — all running locally without any GPU or external API.
+---
+
+```markdown
+# 🤖 CLI Chatbot using Mistral-7B-Instruct (Hugging Face Transformers)
+
+This project is a command-line chatbot that uses the [mistralai/Mistral-7B-Instruct-v0.1](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1) model from Hugging Face. The chatbot supports **multi-turn dialogue**, maintains short-term memory, and runs efficiently using **4-bit quantization** with `bitsandbytes`.
 
 ---
 
 ## 📌 Features
 
-- 🔄 **Multi-turn memory** (last 3 user-bot interactions)
-- ⚡ **Fast and lightweight** – uses `distilgpt2`
-- 💻 **Fully local** – no need for internet or API keys
-- 🧩 **Modular code structure** for readability and maintainability
-- 💬 **Command-line interface (CLI)** with graceful `/exit` support
+- 🧠 **Instruction-tuned model** (Mistral-7B-Instruct)
+- 🔄 **Multi-turn memory** (last 5 Q&A pairs)
+- 💻 **Command-line interface (CLI)**
+- ⚡️ **Quantized for fast GPU inference (4-bit)**
+- ✅ **Modular Python structure**: clean, extendable code
+- 🔗 **Fully Hugging Face-integrated**
 
 ---
 
@@ -18,12 +24,12 @@ A lightweight, terminal-based chatbot built using Hugging Face's `distilgpt2` mo
 
 ```
 
-chatbot-project/
-├── model\_loader.py      # Loads the Hugging Face model and tokenizer
-├── chat\_memory.py       # Sliding window memory logic
-├── interface.py         # Main CLI interface
-├── README.md            # This file
-└── .gitignore           # Git ignore rules (optional)
+chatbot-mistral/
+├── model\_loader.py      # Loads the quantized Hugging Face model
+├── chat\_memory.py       # Handles turn-based memory (deque)
+├── interface.py         # Command-line interface for chatting
+├── requirements.txt     # Python dependencies
+└── README.md            # Project documentation
 
 ````
 
@@ -31,98 +37,101 @@ chatbot-project/
 
 ## 🚀 Setup Instructions
 
-### 1. Clone the Repository
+### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/yourusername/chatbot-project.git
-cd chatbot-project
+git clone https://github.com/your-username/chatbot-mistral.git
+cd chatbot-mistral
 ````
 
-### 2. Create a Virtual Environment (Optional but Recommended)
+### 2. (Optional) Create a Virtual Environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate      # On Linux/Mac
-venv\Scripts\activate         # On Windows
+source venv/bin/activate      # For Mac/Linux
+venv\Scripts\activate         # For Windows
 ```
 
-### 3. Install Required Packages
+### 3. Install Dependencies
 
 ```bash
-pip install transformers
+pip install -r requirements.txt
+```
+
+> ✅ Dependencies: `transformers`, `accelerate`, `bitsandbytes`, `sentencepiece`
+
+---
+
+## 🔐 Hugging Face Token Setup (Important)
+
+Since Mistral is a **gated model**, you must:
+
+1. Create an account on [https://huggingface.co](https://huggingface.co)
+2. Accept the terms for [mistralai/Mistral-7B-Instruct](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1)
+3. Get your token from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+4. Log in in Colab or terminal:
+
+```python
+from huggingface_hub import login
+login()  # Paste your token when prompted
 ```
 
 ---
 
-## ▶️ Running the Chatbot
-
-Simply run the CLI using:
+## ▶️ Run the Chatbot
 
 ```bash
 python interface.py
 ```
 
-You'll see:
+Then chat naturally:
 
 ```
-🤖 Chatbot is ready! Type your message below.
-Type '/exit' to end the chat.
-```
+You: What is the capital of India?
+Bot: The capital of India is New Delhi.
 
----
-
-## 💡 Example Interaction
-
-```
-You: What is the capital of France?
+You: And of France?
 Bot: The capital of France is Paris.
+```
 
-You: And what about Italy?
-Bot: The capital of Italy is Rome.
+Exit anytime with:
 
+```
 You: /exit
-Bot: Exiting chatbot. Goodbye! 👋
 ```
 
 ---
 
-## 🎥 Demo Video
+## 💬 Prompt Style (Mistral Format)
 
-📽️ [Watch the 2-minute demo](https://your-demo-link-here.com)
-Includes a walkthrough of:
+The chatbot uses the \[INST]...\[/INST] token format to simulate conversation:
 
-* Project files & structure
-* Running the bot
-* Explanation of design decisions
+```text
+[INST] What is the capital of France? [/INST] Paris
+```
 
----
-
-## 📚 Model Used
-
-* [`distilgpt2`](https://huggingface.co/distilgpt2) – a smaller, faster version of GPT-2, ideal for local inference
+Context builds from recent turns using `deque`.
 
 ---
 
-## 🧠 Tech Stack
+## 🎥 Demo Walkthrough
 
-* Python 3.8+
-* Hugging Face Transformers
+You can record a short video showing:
+
+* Model loading
+* Chat interaction (3–5 Q\&A)
+* Real-time CLI behavior
+* Brief explanation of code + structure
 
 ---
 
 ## 📄 License
 
-This project is open-source and free to use under the MIT License.
+Open-source and free to use under the **MIT License**.
 
 ---
 
-## 🙋‍♂️ Author
+## 👨‍💻 Author
 
-Made with ❤️ by [Nipun Goel](https://github.com/nipungoel24)
-
-✅ Let me know if you'd like:
-- A **demo video script**
-- To test or extend the chatbot
-- Help uploading to GitHub with all assets
-
-Want to include a badge section too?
+Made by [Nipun Goel](https://github.com/nipungoel24)
+Internship project powered by Hugging Face + Mistral

@@ -1,45 +1,44 @@
 # interface.py
-from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
+
+from transformers import pipeline
+from model_loader import load_chatbot_model
+from chat_memory import ChatMemory
+
+def build_prompt(context, user_input):
+    system_prompt = "[INST] You are a helpful, honest, and concise assistant. [/INST]"
+    user_prompt = f"[INST] {user_input} [/INST]"
+    return f"{system_prompt}\n{context}\n{user_prompt}".strip()
 
 def main():
-    print("[*] Loading DialoGPT model...\n")
-    tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
-    model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+    print("[*] Loading Mistral chatbot, please wait...\n")
+    model, tokenizer = load_chatbot_model()
+    chatbot = pipeline("text-generation", model=model, tokenizer=tokenizer)
 
-    # Chat loop
-    chat_history_ids = None
-    step = 0
-    print("[*] Chatbot is ready! Type your message below.")
+    memory = ChatMemory(max_turns=5)
+    print("[*] Chatbot is ready! Type your questions below.")
     print("Type '/exit' to end the chat.\n")
 
     while True:
         user_input = input("You: ")
-        if user_input.lower() == "/exit":
+        if user_input.strip().lower() == "/exit":
             print("Bot: Exiting chatbot. Goodbye! 👋")
             break
 
-        # Encode user input
-        new_input_ids = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors='pt')
+        context = memory.get_context()
+        prompt = build_prompt(context, user_input)
 
-        # Append to chat history
-        bot_input_ids = torch.cat([chat_history_ids, new_input_ids], dim=-1) if step > 0 else new_input_ids
-
-        # Generate response
-        chat_history_ids = model.generate(
-            bot_input_ids,
-            max_new_tokens=100,
-            pad_token_id=tokenizer.eos_token_id,
+        output = chatbot(
+            prompt,
+            max_new_tokens=256,
             do_sample=True,
+            temperature=0.7,
             top_k=50,
-            top_p=0.95,
-            temperature=0.75
-        )
+            top_p=0.9,
+            return_full_text=False
+        )[0]["generated_text"].strip()
 
-        # Decode response
-        bot_output = tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
-        print(f"Bot: {bot_output}")
-        step += 1
+        print(f"Bot: {output}")
+        memory.add_turn(user_input, output)
 
 if __name__ == "__main__":
     main()

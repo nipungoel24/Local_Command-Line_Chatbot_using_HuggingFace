@@ -1,22 +1,17 @@
 # model_loader.py
-from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
 
-def load_chatbot_model(model_name="microsoft/DialoGPT-small"):
-    print("Loading model...")
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
+def load_chatbot_model(model_id="mistralai/Mistral-7B-Instruct-v0.1"):
+    print(f"[*] Loading model: {model_id}")
 
-    # Set pad token
-    if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-    chatbot = pipeline(
-        "text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        max_new_tokens=100,
-        pad_token_id=tokenizer.pad_token_id
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        device_map="auto",
+        torch_dtype="auto",
+        load_in_4bit=True
     )
 
-    return chatbot, tokenizer
+    return model, tokenizer

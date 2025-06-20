@@ -1,0 +1,5 @@
+# requirements.txt
+transformers
+accelerate
+bitsandbytes
+sentencepiece
